@@ -1,1 +1,882 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Your Name | Researcher</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    :root {
+      --navy-deep:    #050d1a;
+      --navy-mid:     #0a1a35;
+      --navy-soft:    #102040;
+      --navy-card:    #0d1f3c;
+      --navy-border:  #1a3255;
+      --bronze:       #c8762a;
+      --bronze-light: #e8943a;
+      --bronze-glow:  #f0a84888;
+      --bronze-dim:   #7a4418;
+      --white:        #f0eee8;
+      --white-dim:    #b8b4ac;
+      --star-color:   rgba(200,118,42,0.18);
+    }
 
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background-color: var(--navy-deep);
+      color: var(--white);
+      font-family: 'Outfit', sans-serif;
+      font-weight: 300;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* ── STAR CANVAS ── */
+    #stars {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.1rem 5vw;
+      background: linear-gradient(180deg, rgba(5,13,26,0.98) 0%, rgba(5,13,26,0.7) 100%);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--navy-border);
+    }
+
+    .nav-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.45rem;
+      font-weight: 600;
+      color: var(--white);
+      letter-spacing: 0.04em;
+    }
+    .nav-logo span { color: var(--bronze); }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 0.2rem;
+    }
+
+    nav ul li a {
+      text-decoration: none;
+      color: var(--white-dim);
+      font-size: 0.82rem;
+      font-weight: 400;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 0.45rem 0.95rem;
+      border-radius: 4px;
+      transition: color 0.25s, background 0.25s;
+      position: relative;
+    }
+
+    nav ul li a::after {
+      content: '';
+      position: absolute;
+      bottom: 4px; left: 50%; transform: translateX(-50%);
+      width: 0; height: 1.5px;
+      background: var(--bronze);
+      transition: width 0.3s;
+    }
+
+    nav ul li a:hover,
+    nav ul li a.active {
+      color: var(--white);
+    }
+    nav ul li a:hover::after,
+    nav ul li a.active::after { width: 60%; }
+
+    /* ── HERO ── */
+    #hero {
+      position: relative;
+      z-index: 1;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding: 0 10vw;
+      padding-top: 5rem;
+    }
+
+    .hero-inner {
+      max-width: 700px;
+    }
+
+    .hero-eyebrow {
+      font-size: 0.78rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--bronze);
+      margin-bottom: 1.2rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .hero-eyebrow::before {
+      content: '';
+      display: inline-block;
+      width: 32px; height: 1px;
+      background: var(--bronze);
+    }
+
+    h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(3rem, 7vw, 5.5rem);
+      font-weight: 300;
+      line-height: 1.08;
+      margin-bottom: 1.4rem;
+      letter-spacing: -0.01em;
+    }
+
+    h1 em {
+      font-style: italic;
+      color: var(--bronze-light);
+    }
+
+    .hero-sub {
+      font-size: 1rem;
+      color: var(--white-dim);
+      max-width: 520px;
+      margin-bottom: 2.5rem;
+      line-height: 1.8;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.72rem 1.6rem;
+      border-radius: 4px;
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.82rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      text-decoration: none;
+      cursor: pointer;
+      transition: all 0.25s;
+    }
+
+    .btn-primary {
+      background: var(--bronze);
+      color: var(--navy-deep);
+      border: 1.5px solid var(--bronze);
+    }
+    .btn-primary:hover {
+      background: var(--bronze-light);
+      border-color: var(--bronze-light);
+      box-shadow: 0 0 22px var(--bronze-glow);
+      transform: translateY(-1px);
+    }
+
+    .btn-secondary {
+      background: transparent;
+      color: var(--white);
+      border: 1.5px solid var(--navy-border);
+    }
+    .btn-secondary:hover {
+      border-color: var(--bronze);
+      color: var(--bronze-light);
+      transform: translateY(-1px);
+    }
+
+    /* ── SECTION BASE ── */
+    section {
+      position: relative;
+      z-index: 1;
+      padding: 6rem 10vw;
+    }
+
+    .section-label {
+      font-size: 0.72rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--bronze);
+      margin-bottom: 0.6rem;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+    .section-label::before {
+      content: '';
+      display: inline-block;
+      width: 24px; height: 1px;
+      background: var(--bronze);
+    }
+
+    h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 300;
+      margin-bottom: 3rem;
+      letter-spacing: -0.01em;
+    }
+
+    /* ── DIVIDER ── */
+    .divider {
+      width: 100%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--navy-border) 20%, var(--navy-border) 80%, transparent);
+      margin: 0 10vw;
+      width: calc(100% - 20vw);
+    }
+
+    /* ── ABOUT ── */
+    #about {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+      align-items: start;
+    }
+
+    #about .about-text p {
+      color: var(--white-dim);
+      margin-bottom: 1.2rem;
+      font-size: 0.97rem;
+    }
+
+    .about-stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+
+    .stat-card {
+      background: var(--navy-card);
+      border: 1px solid var(--navy-border);
+      border-radius: 6px;
+      padding: 1.4rem;
+      transition: border-color 0.3s;
+    }
+    .stat-card:hover { border-color: var(--bronze-dim); }
+
+    .stat-number {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.4rem;
+      font-weight: 600;
+      color: var(--bronze);
+      line-height: 1;
+      margin-bottom: 0.3rem;
+    }
+    .stat-label {
+      font-size: 0.78rem;
+      color: var(--white-dim);
+      letter-spacing: 0.05em;
+    }
+
+    .about-right {
+      padding-top: 1rem;
+    }
+
+    .profile-frame {
+      width: 100%;
+      max-width: 320px;
+      aspect-ratio: 3/4;
+      background: var(--navy-card);
+      border: 1px solid var(--navy-border);
+      border-radius: 6px;
+      overflow: hidden;
+      position: relative;
+      margin-bottom: 2rem;
+    }
+
+    .profile-frame::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, var(--bronze-dim) 0%, transparent 50%);
+      opacity: 0.2;
+    }
+
+    .profile-placeholder {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      color: var(--navy-border);
+    }
+
+    .profile-placeholder i { font-size: 3rem; }
+    .profile-placeholder span { font-size: 0.8rem; letter-spacing: 0.1em; text-transform: uppercase; }
+
+    /* ── PUBLICATIONS ── */
+    #publications { background: var(--navy-mid); }
+
+    .pub-list { display: flex; flex-direction: column; gap: 1.2rem; }
+
+    .pub-card {
+      background: var(--navy-card);
+      border: 1px solid var(--navy-border);
+      border-left: 3px solid var(--bronze);
+      border-radius: 0 6px 6px 0;
+      padding: 1.5rem 1.8rem;
+      transition: transform 0.25s, box-shadow 0.25s, border-left-color 0.25s;
+    }
+    .pub-card:hover {
+      transform: translateX(4px);
+      box-shadow: -4px 0 20px rgba(200,118,42,0.15);
+    }
+
+    .pub-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.15rem;
+      font-weight: 600;
+      color: var(--white);
+      margin-bottom: 0.4rem;
+    }
+
+    .pub-meta {
+      font-size: 0.8rem;
+      color: var(--white-dim);
+      margin-bottom: 0.8rem;
+    }
+
+    .pub-meta strong { color: var(--bronze-light); font-weight: 400; }
+
+    .pub-abstract {
+      font-size: 0.88rem;
+      color: var(--white-dim);
+      line-height: 1.7;
+      margin-bottom: 1rem;
+    }
+
+    .pub-links { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.3rem 0.75rem;
+      border-radius: 3px;
+      font-size: 0.74rem;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border: 1px solid var(--navy-border);
+      color: var(--white-dim);
+      transition: all 0.2s;
+    }
+    .tag:hover { border-color: var(--bronze); color: var(--bronze-light); }
+    .tag.highlight { border-color: var(--bronze-dim); color: var(--bronze-light); }
+
+    /* ── DEMOS ── */
+    #demos { }
+
+    .demo-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .demo-card {
+      background: var(--navy-card);
+      border: 1px solid var(--navy-border);
+      border-radius: 8px;
+      overflow: hidden;
+      transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
+      text-decoration: none;
+      color: inherit;
+      display: block;
+    }
+    .demo-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 40px rgba(0,0,0,0.4);
+      border-color: var(--bronze-dim);
+    }
+
+    .demo-thumb {
+      width: 100%;
+      height: 170px;
+      background: linear-gradient(135deg, var(--navy-soft) 0%, var(--navy-mid) 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .demo-thumb::before {
+      content: '';
+      position: absolute;
+      width: 180px; height: 180px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(200,118,42,0.18) 0%, transparent 70%);
+    }
+
+    .demo-thumb i { font-size: 2.5rem; color: var(--bronze); position: relative; z-index: 1; }
+
+    .demo-body { padding: 1.4rem; }
+    .demo-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+    .demo-desc { font-size: 0.86rem; color: var(--white-dim); line-height: 1.65; margin-bottom: 1rem; }
+    .demo-badge {
+      display: inline-block;
+      padding: 0.25rem 0.65rem;
+      background: rgba(200,118,42,0.12);
+      border: 1px solid var(--bronze-dim);
+      color: var(--bronze-light);
+      border-radius: 3px;
+      font-size: 0.72rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    /* ── CONTACT ── */
+    #contact {
+      background: var(--navy-mid);
+      text-align: center;
+    }
+
+    #contact h2 { margin-left: auto; margin-right: auto; }
+    .section-label-center {
+      justify-content: center;
+    }
+    .section-label-center::before { display: none; }
+
+    .contact-sub {
+      color: var(--white-dim);
+      font-size: 0.97rem;
+      max-width: 480px;
+      margin: -1.5rem auto 2.5rem;
+    }
+
+    .contact-icons {
+      display: flex;
+      justify-content: center;
+      gap: 1.2rem;
+      flex-wrap: wrap;
+      margin-bottom: 3rem;
+    }
+
+    .contact-icon {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      text-decoration: none;
+      color: var(--white-dim);
+      transition: color 0.25s, transform 0.25s;
+    }
+
+    .contact-icon:hover {
+      color: var(--bronze-light);
+      transform: translateY(-3px);
+    }
+
+    .icon-circle {
+      width: 54px; height: 54px;
+      border-radius: 50%;
+      border: 1.5px solid var(--navy-border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+      transition: border-color 0.25s, box-shadow 0.25s;
+      background: var(--navy-card);
+    }
+
+    .contact-icon:hover .icon-circle {
+      border-color: var(--bronze);
+      box-shadow: 0 0 18px var(--bronze-glow);
+    }
+
+    .icon-label { font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; }
+
+    .contact-email {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 0.9rem 2rem;
+      background: transparent;
+      border: 1.5px solid var(--navy-border);
+      border-radius: 4px;
+      color: var(--white-dim);
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: all 0.25s;
+    }
+    .contact-email:hover {
+      border-color: var(--bronze);
+      color: var(--bronze-light);
+      box-shadow: 0 0 22px var(--bronze-glow);
+    }
+    .contact-email i { color: var(--bronze); }
+
+    /* ── FOOTER ── */
+    footer {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      padding: 2rem;
+      border-top: 1px solid var(--navy-border);
+      font-size: 0.78rem;
+      color: var(--white-dim);
+      letter-spacing: 0.05em;
+    }
+
+    footer span { color: var(--bronze); }
+
+    /* ── SCROLL ANIMATIONS ── */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .fade-in.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      nav ul { display: none; }
+      #hero { padding: 0 6vw; padding-top: 5rem; }
+      section { padding: 4rem 6vw; }
+      #about { grid-template-columns: 1fr; gap: 2rem; }
+      .about-right { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Starfield canvas -->
+<canvas id="stars"></canvas>
+
+<!-- ── NAVIGATION ── -->
+<nav>
+  <div class="nav-logo">Your<span>Name</span></div>
+  <ul>
+    <li><a href="#about">About</a></li>
+    <li><a href="#publications">Publications</a></li>
+    <li><a href="#demos">Demos</a></li>
+    <li><a href="#contact">Contact</a></li>
+    <li><a href="assets/cv.pdf" target="_blank" class="btn btn-primary" style="padding:0.38rem 0.95rem;font-size:0.78rem;">
+      <i class="fas fa-file-alt"></i> CV
+    </a></li>
+  </ul>
+</nav>
+
+<!-- ── HERO ── -->
+<section id="hero">
+  <div class="hero-inner">
+    <p class="hero-eyebrow">Researcher · Developer</p>
+    <h1>Your Name<br>in <em>Science</em></h1>
+    <p class="hero-sub">
+      Brief one-liner about your field and what you work on. This could mention your institution, 
+      key research interests, or current project.
+    </p>
+    <div class="hero-actions">
+      <a href="#publications" class="btn btn-primary"><i class="fas fa-book-open"></i> Publications</a>
+      <a href="#demos" class="btn btn-secondary"><i class="fas fa-flask"></i> Live Demos</a>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ── ABOUT ── -->
+<section id="about" style="padding-top:5rem;">
+  <div>
+    <p class="section-label">About me</p>
+    <h2>Who I Am</h2>
+    <div class="about-text">
+      <p>
+        Write a short paragraph about your background, research interests, and current position. 
+        This is a great place to mention your institution, department, and the big-picture questions 
+        that drive your work.
+      </p>
+      <p>
+        You can include a second paragraph about your methodology, collaborations, or what makes 
+        your approach unique. Keep it conversational and human.
+      </p>
+      <div class="about-stats fade-in">
+        <div class="stat-card">
+          <div class="stat-number">12</div>
+          <div class="stat-label">Publications</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">3</div>
+          <div class="stat-label">Active Projects</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">5+</div>
+          <div class="stat-label">Years Research</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">8</div>
+          <div class="stat-label">Collaborators</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="about-right fade-in">
+    <div class="profile-frame">
+      <div class="profile-placeholder">
+        <i class="fas fa-user"></i>
+        <span>your photo here</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ── PUBLICATIONS ── -->
+<section id="publications">
+  <p class="section-label">Research</p>
+  <h2>Selected Publications</h2>
+  <div class="pub-list">
+
+    <div class="pub-card fade-in">
+      <div class="pub-title">Your Most Recent Paper Title Goes Here</div>
+      <div class="pub-meta">
+        Your Name, Co-Author A, Co-Author B &nbsp;·&nbsp;
+        <strong>Journal of Something Important, 2024</strong>
+      </div>
+      <p class="pub-abstract">
+        One or two sentences summarising the paper — what problem it addressed, the method used, 
+        and the key finding. Keep it accessible to a broad audience.
+      </p>
+      <div class="pub-links">
+        <a href="#" class="tag highlight"><i class="fas fa-external-link-alt"></i> Paper</a>
+        <a href="#" class="tag"><i class="fab fa-github"></i> Code</a>
+        <a href="#" class="tag"><i class="fas fa-database"></i> Data</a>
+      </div>
+    </div>
+
+    <div class="pub-card fade-in">
+      <div class="pub-title">An Earlier Publication Title</div>
+      <div class="pub-meta">
+        Your Name, Co-Author C &nbsp;·&nbsp;
+        <strong>Conference on Something, 2023</strong>
+      </div>
+      <p class="pub-abstract">
+        Summary of paper #2. Describe the novelty and significance concisely. 
+        You can mention the dataset, scale, or community impact.
+      </p>
+      <div class="pub-links">
+        <a href="#" class="tag highlight"><i class="fas fa-external-link-alt"></i> Paper</a>
+        <a href="#" class="tag"><i class="fas fa-file-pdf"></i> Preprint</a>
+      </div>
+    </div>
+
+    <div class="pub-card fade-in">
+      <div class="pub-title">Another Paper or Preprint</div>
+      <div class="pub-meta">
+        Your Name et al. &nbsp;·&nbsp;
+        <strong>arXiv, 2022</strong>
+      </div>
+      <p class="pub-abstract">
+        A third publication entry. Duplicate this block for each paper you want to list.
+      </p>
+      <div class="pub-links">
+        <a href="#" class="tag highlight"><i class="fas fa-external-link-alt"></i> arXiv</a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ── DEMOS ── -->
+<section id="demos">
+  <p class="section-label">Interactive</p>
+  <h2>Live Demos</h2>
+  <div class="demo-grid">
+
+    <a href="demo1.html" class="demo-card fade-in">
+      <div class="demo-thumb">
+        <i class="fas fa-robot"></i>
+      </div>
+      <div class="demo-body">
+        <div class="demo-title">Demo Name One</div>
+        <p class="demo-desc">
+          Brief description of what this Python GUI demo does. Tell users what to expect 
+          and what they can interact with.
+        </p>
+        <span class="demo-badge"><i class="fas fa-play"></i> Try it live</span>
+      </div>
+    </a>
+
+    <a href="demo2.html" class="demo-card fade-in">
+      <div class="demo-thumb">
+        <i class="fas fa-chart-network"></i>
+      </div>
+      <div class="demo-body">
+        <div class="demo-title">Demo Name Two</div>
+        <p class="demo-desc">
+          Another interactive tool or visualisation. Powered by Gradio / Streamlit 
+          embedded from Hugging Face Spaces.
+        </p>
+        <span class="demo-badge"><i class="fas fa-play"></i> Try it live</span>
+      </div>
+    </a>
+
+    <a href="demo3.html" class="demo-card fade-in">
+      <div class="demo-thumb">
+        <i class="fas fa-microscope"></i>
+      </div>
+      <div class="demo-body">
+        <div class="demo-title">Demo Name Three</div>
+        <p class="demo-desc">
+          Add as many demo cards as you need by duplicating this block.
+        </p>
+        <span class="demo-badge"><i class="fas fa-play"></i> Try it live</span>
+      </div>
+    </a>
+
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ── CONTACT ── -->
+<section id="contact">
+  <p class="section-label section-label-center" style="justify-content:center;">Get in touch</p>
+  <h2 style="text-align:center;">Contact</h2>
+  <p class="contact-sub">
+    Always happy to discuss research, collaborations, or anything in between.
+  </p>
+
+  <div class="contact-icons">
+    <a href="mailto:you@university.edu" class="contact-icon" title="Email">
+      <div class="icon-circle"><i class="fas fa-envelope"></i></div>
+      <span class="icon-label">Email</span>
+    </a>
+    <a href="https://github.com/yourusername" target="_blank" class="contact-icon" title="GitHub">
+      <div class="icon-circle"><i class="fab fa-github"></i></div>
+      <span class="icon-label">GitHub</span>
+    </a>
+    <a href="https://linkedin.com/in/yourprofile" target="_blank" class="contact-icon" title="LinkedIn">
+      <div class="icon-circle"><i class="fab fa-linkedin-in"></i></div>
+      <span class="icon-label">LinkedIn</span>
+    </a>
+    <a href="https://twitter.com/yourhandle" target="_blank" class="contact-icon" title="Twitter / X">
+      <div class="icon-circle"><i class="fab fa-x-twitter"></i></div>
+      <span class="icon-label">X / Twitter</span>
+    </a>
+    <a href="https://scholar.google.com" target="_blank" class="contact-icon" title="Google Scholar">
+      <div class="icon-circle"><i class="fas fa-graduation-cap"></i></div>
+      <span class="icon-label">Scholar</span>
+    </a>
+    <a href="https://orcid.org/0000-0000-0000-0000" target="_blank" class="contact-icon" title="ORCID">
+      <div class="icon-circle"><i class="fab fa-orcid"></i></div>
+      <span class="icon-label">ORCID</span>
+    </a>
+  </div>
+
+  <a href="mailto:you@university.edu" class="contact-email">
+    <i class="fas fa-paper-plane"></i>
+    you@university.edu
+  </a>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer>
+  © 2025 <span>Your Name</span> · Built with GitHub Pages
+</footer>
+
+<!-- ── SCRIPTS ── -->
+<script>
+  /* Starfield */
+  (function(){
+    const canvas = document.getElementById('stars');
+    const ctx = canvas.getContext('2d');
+    let stars = [];
+
+    function resize(){
+      canvas.width  = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+
+    function initStars(){
+      stars = [];
+      const count = Math.floor((canvas.width * canvas.height) / 4500);
+      for(let i = 0; i < count; i++){
+        stars.push({
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height,
+          r: Math.random() * 1.2 + 0.2,
+          alpha: Math.random() * 0.6 + 0.2,
+          speed: Math.random() * 0.015 + 0.003,
+          phase: Math.random() * Math.PI * 2
+        });
+      }
+    }
+
+    let t = 0;
+    function draw(){
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      t += 0.008;
+      stars.forEach(s => {
+        const a = s.alpha * (0.6 + 0.4 * Math.sin(t * s.speed * 80 + s.phase));
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, s.r, 0, Math.PI*2);
+        ctx.fillStyle = `rgba(220, 210, 195, ${a})`;
+        ctx.fill();
+      });
+      requestAnimationFrame(draw);
+    }
+
+    resize();
+    initStars();
+    draw();
+    window.addEventListener('resize', ()=>{ resize(); initStars(); });
+  })();
+
+  /* Scroll fade-in */
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if(e.isIntersecting) { e.target.classList.add('visible'); }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+  /* Active nav link */
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('nav ul li a');
+  window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(s => {
+      if(window.scrollY >= s.offsetTop - 120) current = s.id;
+    });
+    navLinks.forEach(a => {
+      a.classList.toggle('active', a.getAttribute('href') === '#' + current);
+    });
+  });
+</script>
+
+</body>
+</html>
