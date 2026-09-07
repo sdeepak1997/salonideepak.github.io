@@ -342,6 +342,7 @@
       background: radial-gradient(circle, rgba(200,118,42,0.18) 0%, transparent 70%);
     }
     .demo-thumb i { font-size: 2.4rem; color: var(--bronze); position: relative; z-index: 1; }
+    .demo-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
     .demo-body { padding: 1.3rem; }
     .demo-title {
       font-family: 'Cormorant Garamond', serif;
@@ -550,11 +551,11 @@
   <div class="demo-grid">
 
     <a href="demo1.html" class="demo-card fade-in">
-      <div class="demo-thumb"><i class="fas fa-robot"></i></div>
+      <div class="demo-thumb"><img src="assets/lyman_limit.svg" alt="Lyman limit absorption spectrum"></div>
       <div class="demo-body">
-        <div class="demo-title">Spectral analysis</div>
-        <p class="demo-desc">Under construction.</p>
-        <span class="demo-badge"><i class="fas fa-play"></i> Try it live</span>
+      <div class="demo-title">Modeling Lyman Limit Systems</div>
+      <p class="demo-desc">Fit H&#8201;I absorbers to a quasar's far-UV spectrum: continuum, Lyman series, and the Lyman-limit edge, convolved with the instrument LSF.</p>
+      <span class="demo-badge"><i class="fas fa-play"></i> Try it live</span>
       </div>
     </a>
 
