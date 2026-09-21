@@ -19,6 +19,7 @@
       --bronze-glow:  #f0a84888;
       --bronze-dim:   #7a4418;
       --rust-deep:    #4a2410;
+      --gold:         #e8b13a;
       --white:        #f0eee8;
       --white-dim:    #b8b4ac;
       --white-faint:  #6f7688;
@@ -76,9 +77,9 @@
     main {
       position: relative;
       z-index: 1;
-      max-width: 1180px;
+      max-width: 1300px;
       margin: 0 auto;
-      padding: 8rem 5vw 6rem;
+      padding: 8rem 4vw 5rem;
     }
 
     .section-label {
@@ -104,118 +105,118 @@
     .intro {
       color: var(--white-dim);
       font-size: 0.95rem;
-      max-width: 680px;
-      margin-bottom: 3.5rem;
+      max-width: 720px;
+      margin-bottom: 2.5rem;
       line-height: 1.8;
     }
     .intro strong { color: var(--bronze-light); font-weight: 400; }
-
-    /* ══════════ TREE ══════════ */
-    .tree-scroll {
-      overflow-x: auto;
-      padding-bottom: 1rem;
-      margin-bottom: 3rem;
-    }
-    .tree, .tree ul {
-      display: table;
-      margin: 0 auto;
-      list-style: none;
-    }
-    .tree li {
-      display: table-cell;
-      vertical-align: top;
-      text-align: center;
-      padding: 24px 10px 0 10px;
-      position: relative;
-    }
-    .tree li::before, .tree li::after {
-      content: '';
-      position: absolute;
-      top: 0; right: 50%;
-      border-top: 1px solid var(--navy-border);
-      width: 50%; height: 24px;
-    }
-    .tree li::after { right: auto; left: 50%; border-left: 1px solid var(--navy-border); }
-    .tree li:only-child::after, .tree li:only-child::before { display: none; }
-    .tree li:only-child { padding-top: 0; }
-    .tree li:first-child::before, .tree li:last-child::after { border: 0 none; }
-    .tree li:last-child::before { border-right: 1px solid var(--navy-border); border-radius: 0 6px 0 0; }
-    .tree li:first-child::after { border-radius: 6px 0 0 0; }
-    .tree ul::before {
-      content: '';
-      position: absolute;
-      top: -24px; left: 50%;
-      border-left: 1px solid var(--navy-border);
-      width: 0; height: 24px;
-    }
-    .tree > li { padding-top: 0; }
-    .tree > li::before, .tree > li::after { display: none; }
-
-    .node {
-      display: inline-block;
-      white-space: nowrap;
-      border-radius: 6px;
-      font-family: 'Outfit', sans-serif;
-    }
-    .node.struct {
-      padding: 0.5rem 0.9rem;
+    .legend {
+      display: flex;
+      gap: 1.6rem;
+      flex-wrap: wrap;
+      margin-bottom: 2rem;
       font-size: 0.78rem;
       color: var(--white-faint);
-      letter-spacing: 0.03em;
-      border: 1px dashed var(--navy-border);
-      background: transparent;
     }
-    .node.root {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.25rem;
-      font-weight: 600;
-      color: var(--bronze-light);
-      border: 1.5px solid var(--bronze-dim);
-      background: var(--navy-card);
-      padding: 0.8rem 1.6rem;
-      box-shadow: 0 0 24px rgba(200,118,42,0.12);
+    .legend span { display: inline-flex; align-items: center; gap: 0.5rem; }
+    .legend i.swatch { width: 14px; height: 14px; border-radius: 3px; display: inline-block; }
+    .swatch.shine { background: linear-gradient(135deg, var(--gold), var(--bronze)); box-shadow: 0 0 8px var(--bronze-glow); }
+    .swatch.muted { border: 1px dashed var(--navy-border); }
+
+    /* ══════════ DIAGRAM ══════════ */
+    .diagram-scroll {
+      overflow-x: auto;
+      margin: 0 -4vw 3rem;
+      padding: 0 4vw 1rem;
     }
-    button.node.leaf {
-      cursor: pointer;
-      font-size: 0.85rem;
-      font-weight: 500;
-      color: var(--white);
-      background: var(--navy-card);
-      border: 1px solid var(--navy-border);
-      padding: 0.65rem 1.1rem;
-      transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s, color 0.2s;
+    .diagram {
+      position: relative;
+      width: 100%;
+      min-width: 980px;
+      aspect-ratio: 1200 / 780;
     }
-    button.node.leaf i { color: var(--bronze); margin-right: 0.45rem; }
-    button.node.leaf:hover { transform: translateY(-2px); border-color: var(--bronze-dim); }
-    button.node.leaf.active {
-      border-color: var(--bronze);
-      color: var(--bronze-light);
-      box-shadow: 0 0 18px var(--bronze-glow);
+    .diagram svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+    .diagram svg path {
+      fill: none;
+      stroke: var(--navy-border);
+      stroke-width: 1.5;
     }
 
-    /* the log N_HI colour-bar axis, standing in for the figure's colour coding */
-    .nhi-axis { padding: 0.4rem 0 0.8rem; }
+    .box {
+      position: absolute;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      border-radius: 7px;
+      font-family: 'Outfit', sans-serif;
+      line-height: 1.25;
+      padding: 0.3rem 0.6rem;
+    }
+
+    /* root + category (structural) boxes */
+    .box.cat0 {
+      background: var(--navy-card);
+      border: 1.5px solid var(--bronze-dim);
+      color: var(--bronze-light);
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 600;
+      font-size: 1.05rem;
+      box-shadow: 0 0 20px rgba(200,118,42,0.1);
+    }
+    .box.cat1 {
+      background: var(--navy-mid);
+      border: 1px solid var(--navy-border);
+      color: var(--white-dim);
+      font-size: 0.82rem;
+      font-weight: 500;
+    }
+    .box.struct {
+      background: transparent;
+      border: 1px dashed var(--navy-border);
+      color: var(--white-faint);
+      font-size: 0.74rem;
+    }
+
+    /* clickable "shine" leaves */
+    button.box.leaf {
+      cursor: pointer;
+      background: linear-gradient(135deg, var(--gold) 0%, var(--bronze) 100%);
+      border: 1.5px solid var(--bronze-light);
+      color: var(--navy-deep);
+      font-weight: 600;
+      font-size: 0.85rem;
+      box-shadow: 0 0 16px var(--bronze-glow);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    button.box.leaf i { display: block; font-size: 0.95rem; margin-bottom: 0.15rem; }
+    button.box.leaf:hover { transform: translateY(-3px); box-shadow: 0 0 26px var(--bronze-glow); }
+    button.box.leaf.active { border-color: var(--white); box-shadow: 0 0 30px var(--bronze-glow), 0 0 0 2px var(--bronze-light); }
+
+    /* the log N_HI colour-bar axis */
     .nhi-gradient {
-      width: 220px;
-      height: 8px;
-      margin: 0 auto 0.35rem;
-      border-radius: 4px;
-      background: linear-gradient(90deg, var(--bronze-light) 0%, var(--bronze) 45%, var(--bronze-dim) 75%, var(--rust-deep) 100%);
+      position: absolute;
+      border-radius: 5px;
+      background: linear-gradient(90deg, var(--bronze-dim) 0%, var(--bronze) 40%, var(--bronze-light) 75%, var(--gold) 100%);
     }
     .nhi-ticks {
+      position: absolute;
       display: flex;
       justify-content: space-between;
-      width: 220px;
-      margin: 0 auto;
-      font-size: 0.62rem;
-      color: var(--white-faint);
-      letter-spacing: 0.02em;
-    }
-    .nhi-caption {
       font-size: 0.68rem;
       color: var(--white-faint);
-      margin-top: 0.3rem;
-      letter-spacing: 0.02em;
+    }
+    .nhi-caption {
+      position: absolute;
+      font-size: 0.72rem;
+      color: var(--white-faint);
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      border: 1px solid var(--navy-border);
+      border-radius: 4px;
+      justify-content: center;
     }
 
     /* ══════════ CONTENT PANEL ══════════ */
@@ -298,82 +299,19 @@
   <p class="intro">
     Metals made in stars end up scattered across very different reservoirs — condensed into dust and stars,
     diffuse in the neutral and ionized gas around galaxies, or heated into the hot intracluster medium.
-    Click a reservoir in the tree below. Stats quoted are the approximate z ~ 0.1 metal-mass-density shares
+    Click a glowing reservoir below. Stats quoted are the approximate z ~ 0.1 metal-mass-density shares
     from <strong>Deepak et al. 2025</strong>, where given.
   </p>
+  <div class="legend">
+    <span><i class="swatch shine"></i> click to explore</span>
+    <span><i class="swatch muted"></i> structural category</span>
+  </div>
 
-  <div class="tree-scroll">
-    <ul class="tree">
-      <li>
-        <span class="node root">Global Metal Content</span>
-        <ul>
-          <li>
-            <button class="node leaf" data-tab="stars"><i class="fas fa-star"></i>Stars</button>
-          </li>
-          <li>
-            <span class="node struct">Diffuse Matter</span>
-            <ul>
-              <li>
-                <span class="node struct">Circumgalactic&nbsp;/&nbsp;Galactic</span>
-                <ul>
-                  <li>
-                    <button class="node leaf" data-tab="dust"><i class="fas fa-cloud"></i>Dust</button>
-                  </li>
-                  <li>
-                    <span class="node struct">Gas</span>
-                    <ul>
-                      <li>
-                        <span class="node struct">Cool Gas &nbsp;(T&nbsp;&lt;&nbsp;10⁵&nbsp;K)</span>
-                        <ul>
-                          <li>
-                            <button class="node leaf" data-tab="molecular-gas"><i class="fas fa-atom"></i>Molecular Gas</button>
-                          </li>
-                          <li>
-                            <span class="node struct">Atomic H&nbsp;I&nbsp;/&nbsp;H&nbsp;II</span>
-                            <div class="nhi-axis">
-                              <div class="nhi-gradient"></div>
-                              <div class="nhi-ticks"><span>14.5</span><span>16.2</span><span>17.2</span><span>19.0</span><span>20.3</span></div>
-                              <div class="nhi-caption">log N<sub>H&#8201;I</sub> — increasing neutral fraction →</div>
-                            </div>
-                            <ul>
-                              <li>
-                                <button class="node leaf" data-tab="ionized-gas"><i class="fas fa-wind"></i>Ionized Gas</button>
-                              </li>
-                              <li>
-                                <button class="node leaf" data-tab="neutral-gas"><i class="fas fa-tint"></i>Neutral Gas</button>
-                              </li>
-                            </ul>
-                          </li>
-                        </ul>
-                      </li>
-                      <li>
-                        <span class="node struct">Hot Gas &nbsp;(T&nbsp;&gt;&nbsp;10⁵&nbsp;K)</span>
-                        <ul>
-                          <li>
-                            <button class="node leaf" data-tab="hot-gas"><i class="fas fa-fire"></i>Hot Gas</button>
-                          </li>
-                        </ul>
-                      </li>
-                    </ul>
-                  </li>
-                </ul>
-              </li>
-              <li>
-                <span class="node struct">Intergalactic</span>
-                <ul>
-                  <li>
-                    <button class="node leaf" data-tab="lyman-alpha-forest"><i class="fas fa-tree"></i>Lyman-α Forest</button>
-                  </li>
-                  <li>
-                    <button class="node leaf" data-tab="whim"><i class="fas fa-temperature-high"></i>WHIM</button>
-                  </li>
-                </ul>
-              </li>
-            </ul>
-          </li>
-        </ul>
-      </li>
-    </ul>
+  <div class="diagram-scroll">
+    <div class="diagram" id="diagram">
+      <svg viewBox="0 0 1200 780" preserveAspectRatio="none"></svg>
+      <!-- boxes injected by JS -->
+    </div>
   </div>
 
   <div class="panel" id="panel">
@@ -419,17 +357,150 @@
     window.addEventListener('resize', () => { resize(); initStars(); });
   })();
 
-  /* Tab loader: each reservoir's content lives in its own file under book-keeping/ */
+  /* ══════════ TREE DIAGRAM ══════════ */
   (function(){
-    const VALID_TABS = ['stars','dust','molecular-gas','neutral-gas','ionized-gas','hot-gas','whim','lyman-alpha-forest'];
-    const buttons = document.querySelectorAll('.node.leaf');
+    const W = 1200, H = 780;
+
+    // x, y, w, h are in the 1200x780 canvas coordinate system, matching
+    // the proportions/arrangement of the original figure.
+    const boxes = [
+      { id:'root',     label:'Global Metal Content',                         x:460, y:10,  w:280, h:64, style:'cat0' },
+
+      { id:'condensed',label:'Condensed / Collapsed Matter<br><span style="opacity:.7;font-size:.85em">(Galactic / Circumgalactic)</span>',
+                                                                              x:60,  y:140, w:440, h:60, style:'cat0' },
+      { id:'diffuse',  label:'Diffuse Matter<br><span style="opacity:.7;font-size:.85em">(Intergalactic)</span>',
+                                                                              x:790, y:140, w:340, h:60, style:'cat0' },
+
+      { id:'planets',  label:'Planets',                                      x:60,  y:250, w:110, h:54, style:'struct' },
+      { id:'stars',    label:'Stars', icon:'fa-star',                        x:190, y:250, w:120, h:54, style:'leaf', tab:'stars' },
+      { id:'dust',     label:'Dust', icon:'fa-cloud',                        x:330, y:250, w:120, h:54, style:'leaf', tab:'dust' },
+      { id:'gas',      label:'Gas',                                          x:470, y:250, w:120, h:54, style:'cat1' },
+
+      { id:'whim',     label:'Warm-Hot IGM<br><span style="opacity:.8;font-size:.85em">(WHIM)</span>', icon:'fa-temperature-high',
+                                                                              x:790, y:250, w:190, h:60, style:'leaf', tab:'whim' },
+      { id:'coolIGM',  label:'Cool IGM',                                     x:1000,y:250, w:140, h:54, style:'struct' },
+
+      { id:'hotgas',   label:'Hot Gas', icon:'fa-fire',                      x:330, y:360, w:150, h:54, style:'leaf', tab:'hot-gas' },
+      { id:'coolgas',  label:'Cool Gas',                                     x:500, y:360, w:150, h:54, style:'cat1' },
+
+      { id:'laf',      label:'Lyα Forest<br><span style="opacity:.8;font-size:.85em">(LAF)</span>', icon:'fa-tree',
+                                                                              x:1000,y:360, w:140, h:60, style:'leaf', tab:'lyman-alpha-forest' },
+
+      { id:'icm',      label:'Intra-Cluster / Intra-Group Medium',           x:230, y:462, w:300, h:58, style:'struct' },
+      { id:'coronal',  label:'Coronal Gas / Hot Ionized Medium',             x:230, y:532, w:300, h:58, style:'struct' },
+      { id:'warmcgm',  label:'Warm Ionized Circumgalactic Gas',              x:230, y:602, w:300, h:58, style:'struct' },
+
+      { id:'molgas',   label:'Molecular Gas', icon:'fa-atom',                x:480, y:462, w:150, h:54, style:'leaf', tab:'molecular-gas' },
+      { id:'atomic',   label:'Atomic H I / H II Gas',                        x:660, y:462, w:190, h:54, style:'cat1' },
+
+      { id:'neutral',  label:'Neutral Gas', icon:'fa-tint',                  x:560, y:568, w:140, h:54, style:'leaf', tab:'neutral-gas' },
+      { id:'partial',  label:'Partially-Ionized Gas',                        x:722, y:568, w:160, h:54, style:'struct' },
+      { id:'ionized',  label:'Ionized Gas', icon:'fa-wind',                  x:904, y:568, w:140, h:54, style:'leaf', tab:'ionized-gas' },
+    ];
+
+    const edges = [
+      ['root', ['condensed','diffuse']],
+      ['condensed', ['planets','stars','dust','gas']],
+      ['diffuse', ['whim','coolIGM']],
+      ['gas', ['hotgas','coolgas']],
+      ['coolIGM', ['laf']],
+      ['hotgas', ['icm','coronal','warmcgm']],
+      ['coolgas', ['molgas','atomic']],
+      ['atomic', ['neutral','partial','ionized']],
+    ];
+
+    const diagram = document.getElementById('diagram');
+    const svg = diagram.querySelector('svg');
+    const byId = Object.fromEntries(boxes.map(b => [b.id, b]));
+    const pct = (v, total) => (v / total * 100) + '%';
+
+    // ── draw boxes ──
+    boxes.forEach(b => {
+      const el = document.createElement(b.style === 'leaf' ? 'button' : 'div');
+      el.className = 'box ' + (b.style === 'leaf' ? 'leaf' : b.style);
+      el.style.left = pct(b.x, W);
+      el.style.top = pct(b.y, H);
+      el.style.width = pct(b.w, W);
+      el.style.height = pct(b.h, H);
+      el.innerHTML = (b.icon ? `<i class="fas ${b.icon}"></i>` : '') + b.label;
+      if (b.style === 'leaf') {
+        el.dataset.tab = b.tab;
+        el.addEventListener('click', () => loadTab(b.tab, true));
+      }
+      diagram.appendChild(el);
+    });
+
+    // ── draw connectors: elbow-with-bus for a row of children,
+    //    a single chained vertical line for a stacked column ──
+    function connect(parent, children){
+      const p = byId[parent];
+      const px = p.x + p.w/2, py = p.y + p.h;
+      const xs = children.map(c => byId[c].x + byId[c].w/2);
+      const isStack = xs.every(x => x === xs[0]);
+      let d;
+      if (isStack) {
+        d = `M ${px} ${py} L ${px} ${byId[children[0]].y}`;
+        for (let i = 0; i < children.length - 1; i++) {
+          const a = byId[children[i]], b = byId[children[i+1]];
+          d += ` M ${px} ${a.y + a.h} L ${px} ${b.y}`;
+        }
+      } else {
+        const busY = py + (byId[children[0]].y - py) / 2;
+        d = `M ${px} ${py} L ${px} ${busY}`;
+        d += ` M ${Math.min(...xs)} ${busY} L ${Math.max(...xs)} ${busY}`;
+        children.forEach(c => {
+          const cb = byId[c];
+          const cx = cb.x + cb.w/2;
+          d += ` M ${cx} ${busY} L ${cx} ${cb.y}`;
+        });
+      }
+      const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+      path.setAttribute('d', d);
+      svg.appendChild(path);
+    }
+    edges.forEach(([p, cs]) => connect(p, cs));
+
+    // ── log N_HI colour-bar axis, under Neutral/Partial/Ionized ──
+    const barX = byId.neutral.x, barRight = byId.ionized.x + byId.ionized.w;
+    const barY = byId.neutral.y + byId.neutral.h + 14;
+    const gradEl = document.createElement('div');
+    gradEl.className = 'nhi-gradient';
+    gradEl.style.left = pct(barX, W);
+    gradEl.style.top = pct(barY, H);
+    gradEl.style.width = pct(barRight - barX, W);
+    gradEl.style.height = pct(10, H);
+    diagram.appendChild(gradEl);
+
+    const ticksEl = document.createElement('div');
+    ticksEl.className = 'nhi-ticks';
+    ticksEl.style.left = pct(barX, W);
+    ticksEl.style.top = pct(barY + 16, H);
+    ticksEl.style.width = pct(barRight - barX, W);
+    ['20.3','19.0','17.2','16.2','14.5'].forEach(v => {
+      const s = document.createElement('span');
+      s.textContent = v;
+      ticksEl.appendChild(s);
+    });
+    diagram.appendChild(ticksEl);
+
+    const capEl = document.createElement('div');
+    capEl.className = 'nhi-caption';
+    capEl.style.left = pct(barX - 40, W);
+    capEl.style.top = pct(barY + 44, H);
+    capEl.style.width = pct(barRight - barX + 40, W);
+    capEl.style.height = pct(32, H);
+    capEl.innerHTML = 'log N<sub>H&#8201;I</sub> — increasing neutral fraction / baryon overdensity Δ<sub>b</sub> →';
+    diagram.appendChild(capEl);
+
+    // ══════════ TAB LOADER ══════════
+    const VALID_TABS = boxes.filter(b => b.tab).map(b => b.tab);
     const panel = document.getElementById('panel');
 
     function setActive(id){
-      buttons.forEach(b => b.classList.toggle('active', b.dataset.tab === id));
+      diagram.querySelectorAll('.box.leaf').forEach(b => b.classList.toggle('active', b.dataset.tab === id));
     }
 
-    function loadTab(id, updateHash){
+    window.loadTab = function(id, updateHash){
       if(!VALID_TABS.includes(id)) id = 'stars';
       setActive(id);
       panel.innerHTML = '<p class="panel-error">Loading…</p>';
@@ -442,11 +513,7 @@
             'as a local file for the tabs to fetch their content.</p>';
         });
       if(updateHash) history.replaceState(null, '', `#${id}`);
-    }
-
-    buttons.forEach(btn => {
-      btn.addEventListener('click', () => loadTab(btn.dataset.tab, true));
-    });
+    };
 
     const initial = window.location.hash.replace('#', '');
     loadTab(VALID_TABS.includes(initial) ? initial : 'stars', false);
