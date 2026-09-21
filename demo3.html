@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Book-keeping | Saloni Deepak</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    :root {
+      --navy-deep:    #050d1a;
+      --navy-mid:     #0a1a35;
+      --navy-soft:    #102040;
+      --navy-card:    #0d1f3c;
+      --navy-border:  #1a3255;
+      --bronze:       #c8762a;
+      --bronze-light: #e8943a;
+      --bronze-glow:  #f0a84888;
+      --bronze-dim:   #7a4418;
+      --rust-deep:    #4a2410;
+      --white:        #f0eee8;
+      --white-dim:    #b8b4ac;
+      --white-faint:  #6f7688;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background-color: var(--navy-deep);
+      color: var(--white);
+      font-family: 'Outfit', sans-serif;
+      font-weight: 300;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    #stars { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
+
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.1rem 5vw;
+      background: linear-gradient(180deg, rgba(5,13,26,0.98) 0%, rgba(5,13,26,0.7) 100%);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--navy-border);
+    }
+    .nav-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.45rem;
+      font-weight: 600;
+      color: var(--white);
+      letter-spacing: 0.04em;
+      text-decoration: none;
+    }
+    .nav-logo span { color: var(--bronze); }
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.82rem;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--white-dim);
+      text-decoration: none;
+      transition: color 0.25s;
+    }
+    .back-link:hover { color: var(--bronze-light); }
+
+    main {
+      position: relative;
+      z-index: 1;
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 8rem 5vw 6rem;
+    }
+
+    .section-label {
+      font-size: 0.72rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--bronze);
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+    .section-label::before { content: ''; display: inline-block; width: 22px; height: 1px; background: var(--bronze); }
+
+    h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.2rem, 4.5vw, 3.2rem);
+      font-weight: 300;
+      margin-bottom: 1.2rem;
+      letter-spacing: -0.01em;
+    }
+
+    .intro {
+      color: var(--white-dim);
+      font-size: 0.95rem;
+      max-width: 680px;
+      margin-bottom: 3.5rem;
+      line-height: 1.8;
+    }
+    .intro strong { color: var(--bronze-light); font-weight: 400; }
+
+    /* ══════════ TREE ══════════ */
+    .tree-scroll {
+      overflow-x: auto;
+      padding-bottom: 1rem;
+      margin-bottom: 3rem;
+    }
+    .tree, .tree ul {
+      display: table;
+      margin: 0 auto;
+      list-style: none;
+    }
+    .tree li {
+      display: table-cell;
+      vertical-align: top;
+      text-align: center;
+      padding: 24px 10px 0 10px;
+      position: relative;
+    }
+    .tree li::before, .tree li::after {
+      content: '';
+      position: absolute;
+      top: 0; right: 50%;
+      border-top: 1px solid var(--navy-border);
+      width: 50%; height: 24px;
+    }
+    .tree li::after { right: auto; left: 50%; border-left: 1px solid var(--navy-border); }
+    .tree li:only-child::after, .tree li:only-child::before { display: none; }
+    .tree li:only-child { padding-top: 0; }
+    .tree li:first-child::before, .tree li:last-child::after { border: 0 none; }
+    .tree li:last-child::before { border-right: 1px solid var(--navy-border); border-radius: 0 6px 0 0; }
+    .tree li:first-child::after { border-radius: 6px 0 0 0; }
+    .tree ul::before {
+      content: '';
+      position: absolute;
+      top: -24px; left: 50%;
+      border-left: 1px solid var(--navy-border);
+      width: 0; height: 24px;
+    }
+    .tree > li { padding-top: 0; }
+    .tree > li::before, .tree > li::after { display: none; }
+
+    .node {
+      display: inline-block;
+      white-space: nowrap;
+      border-radius: 6px;
+      font-family: 'Outfit', sans-serif;
+    }
+    .node.struct {
+      padding: 0.5rem 0.9rem;
+      font-size: 0.78rem;
+      color: var(--white-faint);
+      letter-spacing: 0.03em;
+      border: 1px dashed var(--navy-border);
+      background: transparent;
+    }
+    .node.root {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--bronze-light);
+      border: 1.5px solid var(--bronze-dim);
+      background: var(--navy-card);
+      padding: 0.8rem 1.6rem;
+      box-shadow: 0 0 24px rgba(200,118,42,0.12);
+    }
+    button.node.leaf {
+      cursor: pointer;
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--white);
+      background: var(--navy-card);
+      border: 1px solid var(--navy-border);
+      padding: 0.65rem 1.1rem;
+      transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s, color 0.2s;
+    }
+    button.node.leaf i { color: var(--bronze); margin-right: 0.45rem; }
+    button.node.leaf:hover { transform: translateY(-2px); border-color: var(--bronze-dim); }
+    button.node.leaf.active {
+      border-color: var(--bronze);
+      color: var(--bronze-light);
+      box-shadow: 0 0 18px var(--bronze-glow);
+    }
+
+    /* the log N_HI colour-bar axis, standing in for the figure's colour coding */
+    .nhi-axis { padding: 0.4rem 0 0.8rem; }
+    .nhi-gradient {
+      width: 220px;
+      height: 8px;
+      margin: 0 auto 0.35rem;
+      border-radius: 4px;
+      background: linear-gradient(90deg, var(--bronze-light) 0%, var(--bronze) 45%, var(--bronze-dim) 75%, var(--rust-deep) 100%);
+    }
+    .nhi-ticks {
+      display: flex;
+      justify-content: space-between;
+      width: 220px;
+      margin: 0 auto;
+      font-size: 0.62rem;
+      color: var(--white-faint);
+      letter-spacing: 0.02em;
+    }
+    .nhi-caption {
+      font-size: 0.68rem;
+      color: var(--white-faint);
+      margin-top: 0.3rem;
+      letter-spacing: 0.02em;
+    }
+
+    /* ══════════ CONTENT PANEL ══════════ */
+    .panel {
+      background: var(--navy-card);
+      border: 1px solid var(--navy-border);
+      border-left: 3px solid var(--bronze);
+      border-radius: 0 8px 8px 0;
+      padding: 2rem 2.2rem;
+      max-width: 640px;
+      margin: 0 auto;
+      min-height: 180px;
+    }
+    .panel-icon {
+      width: 44px; height: 44px;
+      border-radius: 50%;
+      background: rgba(200,118,42,0.1);
+      border: 1px solid var(--bronze-dim);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--bronze);
+      font-size: 1.15rem;
+      margin-bottom: 1rem;
+    }
+    .panel-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: var(--white);
+      margin-bottom: 0.4rem;
+    }
+    .panel-stat {
+      font-size: 0.82rem;
+      color: var(--bronze-light);
+      margin-bottom: 0.9rem;
+    }
+    .panel-desc {
+      font-size: 0.92rem;
+      color: var(--white-dim);
+      line-height: 1.75;
+      margin-bottom: 1.3rem;
+    }
+    .panel-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.55rem 1.1rem;
+      border-radius: 4px;
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border: 1.5px solid var(--bronze-dim);
+      color: var(--bronze-light);
+      transition: all 0.2s;
+    }
+    .panel-link:hover { border-color: var(--bronze); box-shadow: 0 0 18px var(--bronze-glow); }
+    .panel-error { color: var(--white-faint); font-size: 0.85rem; }
+
+    @media (max-width: 700px) {
+      main { padding: 7rem 5vw 4rem; }
+      .panel { padding: 1.5rem 1.6rem; }
+    }
+  </style>
+</head>
+<body>
+
+<canvas id="stars"></canvas>
+
+<nav>
+  <a href="index.html" class="nav-logo">Saloni<span>Deepak</span></a>
+  <a href="index.html#demos" class="back-link"><i class="fas fa-arrow-left"></i> Back</a>
+</nav>
+
+<main>
+  <p class="section-label">Explore</p>
+  <h1>Book-keeping</h1>
+  <p class="intro">
+    Metals made in stars end up scattered across very different reservoirs — condensed into dust and stars,
+    diffuse in the neutral and ionized gas around galaxies, or heated into the hot intracluster medium.
+    Click a reservoir in the tree below. Stats quoted are the approximate z ~ 0.1 metal-mass-density shares
+    from <strong>Deepak et al. 2025</strong>, where given.
+  </p>
+
+  <div class="tree-scroll">
+    <ul class="tree">
+      <li>
+        <span class="node root">Global Metal Content</span>
+        <ul>
+          <li>
+            <button class="node leaf" data-tab="stars"><i class="fas fa-star"></i>Stars</button>
+          </li>
+          <li>
+            <span class="node struct">Diffuse Matter</span>
+            <ul>
+              <li>
+                <span class="node struct">Circumgalactic&nbsp;/&nbsp;Galactic</span>
+                <ul>
+                  <li>
+                    <button class="node leaf" data-tab="dust"><i class="fas fa-cloud"></i>Dust</button>
+                  </li>
+                  <li>
+                    <span class="node struct">Gas</span>
+                    <ul>
+                      <li>
+                        <span class="node struct">Cool Gas &nbsp;(T&nbsp;&lt;&nbsp;10⁵&nbsp;K)</span>
+                        <ul>
+                          <li>
+                            <button class="node leaf" data-tab="molecular-gas"><i class="fas fa-atom"></i>Molecular Gas</button>
+                          </li>
+                          <li>
+                            <span class="node struct">Atomic H&nbsp;I&nbsp;/&nbsp;H&nbsp;II</span>
+                            <div class="nhi-axis">
+                              <div class="nhi-gradient"></div>
+                              <div class="nhi-ticks"><span>14.5</span><span>16.2</span><span>17.2</span><span>19.0</span><span>20.3</span></div>
+                              <div class="nhi-caption">log N<sub>H&#8201;I</sub> — increasing neutral fraction →</div>
+                            </div>
+                            <ul>
+                              <li>
+                                <button class="node leaf" data-tab="ionized-gas"><i class="fas fa-wind"></i>Ionized Gas</button>
+                              </li>
+                              <li>
+                                <button class="node leaf" data-tab="neutral-gas"><i class="fas fa-tint"></i>Neutral Gas</button>
+                              </li>
+                            </ul>
+                          </li>
+                        </ul>
+                      </li>
+                      <li>
+                        <span class="node struct">Hot Gas &nbsp;(T&nbsp;&gt;&nbsp;10⁵&nbsp;K)</span>
+                        <ul>
+                          <li>
+                            <button class="node leaf" data-tab="hot-gas"><i class="fas fa-fire"></i>Hot Gas</button>
+                          </li>
+                        </ul>
+                      </li>
+                    </ul>
+                  </li>
+                </ul>
+              </li>
+              <li>
+                <span class="node struct">Intergalactic</span>
+                <ul>
+                  <li>
+                    <button class="node leaf" data-tab="lyman-alpha-forest"><i class="fas fa-tree"></i>Lyman-α Forest</button>
+                  </li>
+                  <li>
+                    <button class="node leaf" data-tab="whim"><i class="fas fa-temperature-high"></i>WHIM</button>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+
+  <div class="panel" id="panel">
+    <p class="panel-error">Loading…</p>
+  </div>
+</main>
+
+<script>
+  /* Starfield */
+  (function(){
+    const canvas = document.getElementById('stars');
+    const ctx = canvas.getContext('2d');
+    let stars = [];
+    function resize(){ canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+    function initStars(){
+      stars = [];
+      const count = Math.floor((canvas.width * canvas.height) / 4500);
+      for(let i = 0; i < count; i++){
+        stars.push({
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height,
+          r: Math.random() * 1.2 + 0.2,
+          alpha: Math.random() * 0.6 + 0.2,
+          speed: Math.random() * 0.015 + 0.003,
+          phase: Math.random() * Math.PI * 2
+        });
+      }
+    }
+    let t = 0;
+    function draw(){
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      t += 0.008;
+      stars.forEach(s => {
+        const a = s.alpha * (0.6 + 0.4 * Math.sin(t * s.speed * 80 + s.phase));
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(220, 210, 195, ${a})`;
+        ctx.fill();
+      });
+      requestAnimationFrame(draw);
+    }
+    resize(); initStars(); draw();
+    window.addEventListener('resize', () => { resize(); initStars(); });
+  })();
+
+  /* Tab loader: each reservoir's content lives in its own file under book-keeping/ */
+  (function(){
+    const VALID_TABS = ['stars','dust','molecular-gas','neutral-gas','ionized-gas','hot-gas','whim','lyman-alpha-forest'];
+    const buttons = document.querySelectorAll('.node.leaf');
+    const panel = document.getElementById('panel');
+
+    function setActive(id){
+      buttons.forEach(b => b.classList.toggle('active', b.dataset.tab === id));
+    }
+
+    function loadTab(id, updateHash){
+      if(!VALID_TABS.includes(id)) id = 'stars';
+      setActive(id);
+      panel.innerHTML = '<p class="panel-error">Loading…</p>';
+      fetch(`book-keeping/${id}.html`)
+        .then(res => { if(!res.ok) throw new Error('not found'); return res.text(); })
+        .then(html => { panel.innerHTML = html; })
+        .catch(() => {
+          panel.innerHTML = '<p class="panel-error">Couldn\'t load this reservoir\'s content. ' +
+            'This page needs to be served over HTTP (e.g. via GitHub Pages) rather than opened directly ' +
+            'as a local file for the tabs to fetch their content.</p>';
+        });
+      if(updateHash) history.replaceState(null, '', `#${id}`);
+    }
+
+    buttons.forEach(btn => {
+      btn.addEventListener('click', () => loadTab(btn.dataset.tab, true));
+    });
+
+    const initial = window.location.hash.replace('#', '');
+    loadTab(VALID_TABS.includes(initial) ? initial : 'stars', false);
+  })();
+</script>
+
+</body>
+</html>
