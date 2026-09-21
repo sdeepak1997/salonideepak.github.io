@@ -278,6 +278,32 @@
     .panel-link:hover { border-color: var(--bronze); box-shadow: 0 0 18px var(--bronze-glow); }
     .panel-error { color: var(--white-faint); font-size: 0.85rem; }
 
+    /* curated paper list, populated from .bib files */
+    .panel-papers {
+      list-style: none;
+      margin: 0 0 1.3rem;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.7rem;
+    }
+    .panel-papers li {
+      border-left: 2px solid var(--navy-border);
+      padding-left: 0.8rem;
+    }
+    .panel-papers a {
+      color: var(--white);
+      text-decoration: none;
+      font-size: 0.9rem;
+    }
+    .panel-papers a:hover { color: var(--bronze-light); }
+    .panel-papers .cite {
+      display: block;
+      font-size: 0.76rem;
+      color: var(--white-faint);
+      margin-top: 0.15rem;
+    }
+
     @media (max-width: 700px) {
       main { padding: 7rem 5vw 4rem; }
       .panel { padding: 1.5rem 1.6rem; }
@@ -362,7 +388,9 @@
     const W = 1200, H = 780;
 
     // x, y, w, h are in the 1200x780 canvas coordinate system, matching
-    // the proportions/arrangement of the original figure.
+    // the proportions/arrangement of the original figure. Icon values are
+    // bare FA solid-style names (no "fa-solid"/"fa-regular" prefix) since
+    // the renderer always applies the "fas" class.
     const boxes = [
       { id:'root',     label:'Global Metal Content',                         x:460, y:10,  w:280, h:64, style:'cat0' },
 
@@ -371,17 +399,17 @@
       { id:'diffuse',  label:'Diffuse Matter<br><span style="opacity:.7;font-size:.85em">(Intergalactic)</span>',
                                                                               x:790, y:140, w:340, h:60, style:'cat0' },
 
-      { id:'planets',  label:'Planets', icon:'fa-solid fa-earth-europe',                                     x:60,  y:250, w:110, h:54, style:'struct' },
+      { id:'planets',  label:'Planets', icon:'fa-earth-europe',              x:60,  y:250, w:110, h:54, style:'struct' },
       { id:'stars',    label:'Stars', icon:'fa-star',                        x:190, y:250, w:120, h:54, style:'leaf', tab:'stars' },
-      { id:'dust',     label:'Dust', icon:'fa-solid fa-smog',                        x:330, y:250, w:120, h:54, style:'leaf', tab:'dust' },
-      { id:'gas',      label:'Gas', ico: 'fa-cloud',                                         x:470, y:250, w:120, h:54, style:'cat1' },
+      { id:'dust',     label:'Dust', icon:'fa-smog',                         x:330, y:250, w:120, h:54, style:'leaf', tab:'dust' },
+      { id:'gas',      label:'Gas', icon:'fa-cloud',                         x:470, y:250, w:120, h:54, style:'cat1' },
 
       { id:'whim',     label:'Warm-Hot IGM<br><span style="opacity:.8;font-size:.85em">(WHIM)</span>', icon:'fa-temperature-high',
                                                                               x:790, y:250, w:190, h:60, style:'leaf', tab:'whim' },
-      { id:'coolIGM',  label:'Cool IGM', icon:'fa-temperature-low',                                     x:1000,y:250, w:140, h:54, style:'struct' },
+      { id:'coolIGM',  label:'Cool IGM', icon:'fa-temperature-low',          x:1000,y:250, w:140, h:54, style:'struct' },
 
       { id:'hotgas',   label:'Hot Gas', icon:'fa-fire',                      x:330, y:360, w:150, h:54, style:'leaf', tab:'hot-gas' },
-      { id:'coolgas',  label:'Cool Gas', icon:'fa-snowflake',                                     x:500, y:360, w:150, h:54, style:'cat1' },
+      { id:'coolgas',  label:'Cool Gas', icon:'fa-snowflake',                x:500, y:360, w:150, h:54, style:'cat1' },
 
       { id:'laf',      label:'Lyα Forest<br><span style="opacity:.8;font-size:.85em">(LAF)</span>', icon:'fa-tree',
                                                                               x:1000,y:360, w:140, h:60, style:'leaf', tab:'lyman-alpha-forest' },
@@ -390,12 +418,12 @@
       { id:'coronal',  label:'Coronal Gas / Hot Ionized Medium',             x:170, y:532, w:300, h:58, style:'struct' },
       { id:'warmcgm',  label:'Warm Ionized Circumgalactic Gas',              x:170, y:602, w:300, h:58, style:'struct' },
 
-      { id:'molgas',   label:'Molecular Gas', icon:'fa-dna',                x:480, y:462, w:150, h:54, style:'leaf', tab:'molecular-gas' },
-      { id:'atomic',   label:'Atomic H I / H II Gas', icon:'fa-atom',                       x:660, y:462, w:190, h:54, style:'cat1' },
+      { id:'molgas',   label:'Molecular Gas', icon:'fa-dna',                 x:480, y:462, w:150, h:54, style:'leaf', tab:'molecular-gas' },
+      { id:'atomic',   label:'Atomic H I / H II Gas', icon:'fa-atom',        x:660, y:462, w:190, h:54, style:'cat1' },
 
-      { id:'neutral',  label:'Neutral Gas', icon:'fa-solid fa-cloud',                  x:560, y:568, w:140, h:54, style:'leaf', tab:'neutral-gas' },
-      { id:'partial',  label:'Partially-Ionized Gas',  icon:'fa-regular fa-cloud',       x:722, y:568, w:160, h:54, style:'leaf', tab:'ionized-gas' },
-      { id:'ionized',  label:'Ionized Gas', icon:'fa-regular fa-cloud',                  x:904, y:568, w:140, h:54, style:'leaf', tab:'ionized-gas' },
+      { id:'neutral',  label:'Neutral Gas', icon:'fa-cloud',                 x:560, y:568, w:140, h:54, style:'leaf', tab:'neutral-gas' },
+      { id:'partial',  label:'Partially-Ionized Gas', icon:'fa-cloud',       x:722, y:568, w:160, h:54, style:'leaf', tab:'ionized-gas' },
+      { id:'ionized',  label:'Ionized Gas', icon:'fa-cloud',                 x:904, y:568, w:140, h:54, style:'leaf', tab:'ionized-gas' },
     ];
 
     const edges = [
@@ -492,6 +520,116 @@
     capEl.innerHTML = 'log N<sub>H&#8201;I</sub> — increasing neutral fraction / baryon overdensity Δ<sub>b</sub> →';
     diagram.appendChild(capEl);
 
+    // ══════════ BIBTEX PARSER ══════════
+    // Parses standard ADS-exported .bib entries (handles nested braces,
+    // e.g. accented names) with no external library.
+    function parseBib(text) {
+      text = text.split('\n').filter(line => !/^\s*%/.test(line)).join('\n');
+      const entries = [];
+      let i = 0;
+      while (i < text.length) {
+        if (text[i] === '@') {
+          let j = i + 1;
+          while (j < text.length && text[j] !== '{') j++;
+          const type = text.slice(i + 1, j).trim().toLowerCase();
+          let depth = 1, k = j + 1;
+          while (depth > 0 && k < text.length) {
+            if (text[k] === '{') depth++;
+            else if (text[k] === '}') depth--;
+            k++;
+          }
+          const body = text.slice(j + 1, k - 1);
+          if (type !== 'comment') entries.push(parseEntryBody(body));
+          i = k;
+        } else {
+          i++;
+        }
+      }
+      return entries;
+    }
+
+    function parseEntryBody(body) {
+      const firstComma = body.indexOf(',');
+      const fieldsStr = body.slice(firstComma + 1);
+      const fields = {};
+      let i = 0;
+      while (i < fieldsStr.length) {
+        while (i < fieldsStr.length && /[\s,]/.test(fieldsStr[i])) i++;
+        if (i >= fieldsStr.length) break;
+        let j = i;
+        while (j < fieldsStr.length && fieldsStr[j] !== '=') j++;
+        if (j >= fieldsStr.length) break;
+        const key = fieldsStr.slice(i, j).trim().toLowerCase();
+        j++;
+        while (j < fieldsStr.length && /\s/.test(fieldsStr[j])) j++;
+        let value = '';
+        if (fieldsStr[j] === '{') {
+          let depth = 1, k = j + 1;
+          while (depth > 0 && k < fieldsStr.length) {
+            if (fieldsStr[k] === '{') depth++;
+            else if (fieldsStr[k] === '}') depth--;
+            if (depth > 0) k++;
+          }
+          value = fieldsStr.slice(j + 1, k);
+          i = k + 1;
+        } else if (fieldsStr[j] === '"') {
+          let k = j + 1;
+          while (k < fieldsStr.length && fieldsStr[k] !== '"') k++;
+          value = fieldsStr.slice(j + 1, k);
+          i = k + 1;
+        } else {
+          let k = j;
+          while (k < fieldsStr.length && fieldsStr[k] !== ',') k++;
+          value = fieldsStr.slice(j, k).trim();
+          i = k;
+        }
+        fields[key] = value;
+      }
+      return fields;
+    }
+
+    function cleanLatex(s) {
+      if (!s) return '';
+      return s
+        .replace(/\{?\\'a\}?/g, 'á').replace(/\{?\\'e\}?/g, 'é')
+        .replace(/\{?\\'i\}?/g, 'í').replace(/\{?\\'o\}?/g, 'ó')
+        .replace(/\{?\\'u\}?/g, 'ú')
+        .replace(/\{?\\`a\}?/g, 'à').replace(/\{?\\`e\}?/g, 'è')
+        .replace(/\{?\\~n\}?/g, 'ñ')
+        .replace(/\{?\\"o\}?/g, 'ö').replace(/\{?\\"u\}?/g, 'ü')
+        .replace(/\{?\\c c\}?/g, 'ç')
+        .replace(/[{}]/g, '')
+        .replace(/\s+/g, ' ')
+        .trim();
+    }
+
+    function formatAuthors(authorField) {
+      if (!authorField) return '';
+      const authors = authorField.split(/\s+and\s+/).map(a => cleanLatex(a).split(',')[0].trim());
+      if (authors.length === 1) return authors[0];
+      if (authors.length === 2) return `${authors[0]} &amp; ${authors[1]}`;
+      return `${authors[0]} et al.`;
+    }
+
+    function adsLink(f) {
+      if (f.adsurl) {
+        let u = cleanLatex(f.adsurl);
+        if (!u.endsWith('/abstract')) u = u.replace(/\/?$/, '/abstract');
+        return u;
+      }
+      if (f.doi) return `https://doi.org/${cleanLatex(f.doi)}`;
+      return `https://ui.adsabs.harvard.edu/search/q=${encodeURIComponent(cleanLatex(f.title || ''))}`;
+    }
+
+    function renderPapers(entries, slot){
+      if (!entries.length) { slot.innerHTML = ''; return; }
+      slot.innerHTML = entries.map(f => `
+        <li>
+          <a href="${adsLink(f)}" target="_blank">${cleanLatex(f.title)}</a>
+          <span class="cite">${formatAuthors(f.author)} ${f.year || ''}, ${cleanLatex(f.journal)}${f.volume ? ', ' + cleanLatex(f.volume) : ''}${(f.pages || f.eid) ? ', ' + cleanLatex(f.pages || f.eid) : ''}</span>
+        </li>`).join('');
+    }
+
     // ══════════ TAB LOADER ══════════
     const VALID_TABS = boxes.filter(b => b.tab).map(b => b.tab);
     const panel = document.getElementById('panel');
@@ -506,7 +644,15 @@
       panel.innerHTML = '<p class="panel-error">Loading…</p>';
       fetch(`book-keeping/${id}.html`)
         .then(res => { if(!res.ok) throw new Error('not found'); return res.text(); })
-        .then(html => { panel.innerHTML = html; })
+        .then(html => {
+          panel.innerHTML = html;
+          const slot = panel.querySelector('#papers');
+          if (!slot) return;
+          fetch(`book-keeping/bib/${id}.bib`)
+            .then(res => res.ok ? res.text() : '')
+            .then(text => renderPapers(parseBib(text), slot))
+            .catch(() => {});
+        })
         .catch(() => {
           panel.innerHTML = '<p class="panel-error">Couldn\'t load this reservoir\'s content. ' +
             'This page needs to be served over HTTP (e.g. via GitHub Pages) rather than opened directly ' +
