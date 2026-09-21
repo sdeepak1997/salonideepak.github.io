@@ -371,17 +371,17 @@
       { id:'diffuse',  label:'Diffuse Matter<br><span style="opacity:.7;font-size:.85em">(Intergalactic)</span>',
                                                                               x:790, y:140, w:340, h:60, style:'cat0' },
 
-      { id:'planets',  label:'Planets',                                      x:60,  y:250, w:110, h:54, style:'struct' },
+      { id:'planets',  label:'Planets', icon:'fa-solid fa-earth-europe',                                     x:60,  y:250, w:110, h:54, style:'struct' },
       { id:'stars',    label:'Stars', icon:'fa-star',                        x:190, y:250, w:120, h:54, style:'leaf', tab:'stars' },
-      { id:'dust',     label:'Dust', icon:'fa-cloud',                        x:330, y:250, w:120, h:54, style:'leaf', tab:'dust' },
-      { id:'gas',      label:'Gas',                                          x:470, y:250, w:120, h:54, style:'cat1' },
+      { id:'dust',     label:'Dust', icon:'fa-solid fa-smog',                        x:330, y:250, w:120, h:54, style:'leaf', tab:'dust' },
+      { id:'gas',      label:'Gas', ico: 'fa-cloud',                                         x:470, y:250, w:120, h:54, style:'cat1' },
 
       { id:'whim',     label:'Warm-Hot IGM<br><span style="opacity:.8;font-size:.85em">(WHIM)</span>', icon:'fa-temperature-high',
                                                                               x:790, y:250, w:190, h:60, style:'leaf', tab:'whim' },
-      { id:'coolIGM',  label:'Cool IGM',                                     x:1000,y:250, w:140, h:54, style:'struct' },
+      { id:'coolIGM',  label:'Cool IGM', icon:'fa-temperature-low',                                     x:1000,y:250, w:140, h:54, style:'struct' },
 
       { id:'hotgas',   label:'Hot Gas', icon:'fa-fire',                      x:330, y:360, w:150, h:54, style:'leaf', tab:'hot-gas' },
-      { id:'coolgas',  label:'Cool Gas',                                     x:500, y:360, w:150, h:54, style:'cat1' },
+      { id:'coolgas',  label:'Cool Gas', icon:'fa-snowflake',                                     x:500, y:360, w:150, h:54, style:'cat1' },
 
       { id:'laf',      label:'Lyα Forest<br><span style="opacity:.8;font-size:.85em">(LAF)</span>', icon:'fa-tree',
                                                                               x:1000,y:360, w:140, h:60, style:'leaf', tab:'lyman-alpha-forest' },
@@ -390,12 +390,12 @@
       { id:'coronal',  label:'Coronal Gas / Hot Ionized Medium',             x:170, y:532, w:300, h:58, style:'struct' },
       { id:'warmcgm',  label:'Warm Ionized Circumgalactic Gas',              x:170, y:602, w:300, h:58, style:'struct' },
 
-      { id:'molgas',   label:'Molecular Gas', icon:'fa-atom',                x:480, y:462, w:150, h:54, style:'leaf', tab:'molecular-gas' },
-      { id:'atomic',   label:'Atomic H I / H II Gas',                        x:660, y:462, w:190, h:54, style:'cat1' },
+      { id:'molgas',   label:'Molecular Gas', icon:'fa-dna',                x:480, y:462, w:150, h:54, style:'leaf', tab:'molecular-gas' },
+      { id:'atomic',   label:'Atomic H I / H II Gas', icon:'fa-atom',                       x:660, y:462, w:190, h:54, style:'cat1' },
 
-      { id:'neutral',  label:'Neutral Gas', icon:'fa-tint',                  x:560, y:568, w:140, h:54, style:'leaf', tab:'neutral-gas' },
-      { id:'partial',  label:'Partially-Ionized Gas',  icon:'fa-tint',       x:722, y:568, w:160, h:54, style:'struct' },
-      { id:'ionized',  label:'Ionized Gas', icon:'fa-wind',                  x:904, y:568, w:140, h:54, style:'leaf', tab:'ionized-gas' },
+      { id:'neutral',  label:'Neutral Gas', icon:'fa-solid fa-cloud',                  x:560, y:568, w:140, h:54, style:'leaf', tab:'neutral-gas' },
+      { id:'partial',  label:'Partially-Ionized Gas',  icon:'fa-regular fa-cloud',       x:722, y:568, w:160, h:54, style:'leaf', tab:'ionized-gas' },
+      { id:'ionized',  label:'Ionized Gas', icon:'fa-regular fa-cloud',                  x:904, y:568, w:140, h:54, style:'leaf', tab:'ionized-gas' },
     ];
 
     const edges = [
